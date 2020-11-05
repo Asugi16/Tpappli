@@ -1,32 +1,11 @@
-<p>Par <em><?= $news['auteur'] ?></em>, le <?= $news['dateAjout']->format('d/m/Y à H\hi') ?></p>
-<h2><?= $news['titre'] ?></h2>
-<p><?= nl2br($news['contenu']) ?></p>
+<p style="text-align: center">Il y a actuellement <?= $nombreNews ?> news. En voici la liste :</p>
 
-<?php if ($news['dateAjout'] != $news['dateModif']) { ?>
-  <p style="text-align: right;"><small><em>Modifiée le <?= $news['dateModif']->format('d/m/Y à H\hi') ?></em></small></p>
-<?php } ?>
-
-<p><a href="commenter-<?= $news['id'] ?>.html">Ajouter un commentaire</a></p>
-
+<table>
+  <tr><th>Auteur</th><th>Titre</th><th>Date d'ajout</th><th>Dernière modification</th><th>Action</th></tr>
 <?php
-if (empty($comments))
+foreach ($listeNews as $news)
 {
-?>
-<p>Aucun commentaire n'a encore été posté. Soyez le premier à en laisser un !</p>
-<?php
-}
-
-foreach ($comments as $comment)
-{
-?>
-  <fieldset>
-    <legend>
-      Posté par <strong><?= htmlspecialchars($comment['auteur']) ?></strong> le <?= $comment['date']->format('d/m/Y à H\hi') ?>
-    </legend>
-    <p><?= nl2br(htmlspecialchars($comment['contenu'])) ?></p>
-  </fieldset>
-<?php
+  echo '<tr><td>', $news['auteur'], '</td><td>', $news['titre'], '</td><td>le ', $news['dateAjout']->format('d/m/Y à H\hi'), '</td><td>', ($news['dateAjout'] == $news['dateModif'] ? '-' : 'le '.$news['dateModif']->format('d/m/Y à H\hi')), '</td><td><a href="news-update-', $news['id'], '.html"><img src="/images/update.png" alt="Modifier" /></a> <a href="news-delete-', $news['id'], '.html"><img src="/images/delete.png" alt="Supprimer" /></a></td></tr>', "\n";
 }
 ?>
-
-<p><a href="commenter-<?= $news['id'] ?>.html">Ajouter un commentaire</a></p>
+</table>

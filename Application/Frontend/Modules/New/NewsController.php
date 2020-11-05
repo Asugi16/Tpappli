@@ -1,25 +1,27 @@
 <?php
-namespace App\Frontend\Modules\News;
+namespace App\Backend\Modules\News;
 
 use \OCFram\BackController;
 use \OCFram\HTTPRequest;
-use \Entity\Comment;
+use \Entity\News;
 
 class NewsController extends BackController
 {
   // ...
   
-  public function executeShow(HTTPRequest $request)
+  public function executeUpdate(HTTPRequest $request)
   {
-    $news = $this->managers->getManagerOf('News')->getUnique($request->getData('id'));
-    
-    if (empty($news))
+    if ($request->postExists('auteur'))
     {
-      $this->app->httpResponse()->redirect404();
+      $this->processForm($request);
+    }
+    else
+    {
+      $this->page->addVar('news', $this->managers->getManagerOf('News')->getUnique($request->getData('id')));
     }
     
-    $this->page->addVar('title', $news->titre());
-    $this->page->addVar('news', $news);
-    $this->page->addVar('comments', $this->managers->getManagerOf('Comments')->getListOf($news->id()));
+    $this->page->addVar('title', 'Modification d\'une news');
   }
+  
+  // ...
 }
