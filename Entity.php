@@ -34,19 +34,6 @@ abstract class Entity implements \ArrayAccess
     $this->id = (int) $id;
   }
 
-  public function hydrate(array $donnees)
-  {
-    foreach ($donnees as $attribut => $valeur)
-    {
-      $methode = 'set'.ucfirst($attribut);
-
-      if (is_callable([$this, $methode]))
-      {
-        $this->$methode($valeur);
-      }
-    }
-  }
-
   public function offsetGet($var)
   {
     if (isset($this->$var) && is_callable([$this, $var]))
@@ -74,4 +61,8 @@ abstract class Entity implements \ArrayAccess
   {
     throw new \Exception('Impossible de supprimer une quelconque valeur');
   }
+  use Hydrator;
+  
+  // La méthode hydrate() n'est ainsi plus implémentée dans notre classe
+}
 }
